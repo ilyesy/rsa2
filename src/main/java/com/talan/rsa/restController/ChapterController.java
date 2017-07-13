@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.talan.rsa.entity.Chapter;
-import com.talan.rsa.entity.resourceSupport.RSAResourceSupport;
+import com.talan.rsa.entity.resourceSupport.RSAResource;
 import com.talan.rsa.exception.EntityNotFoundException;
 import com.talan.rsa.service.ChapterService;
 
@@ -33,15 +33,28 @@ public class ChapterController {
 		this.chapterService = chapterService;
 	}
 
+//	@RequestMapping(produces="application/hal+json")
+//	public Resources<RSAResourceSupport> getChapters(UriComponentsBuilder ucb){
+//		URI uriComponent = ucb.path("/chapters/").build().toUri();
+//		List<RSAResourceSupport> chapsResourceSuppurt = chapterService.findAll().stream()
+//				.map(chap -> {
+//					String path = uriComponent.toString()+chap.getId();
+//					return new RSAResourceSupport(chap, path);
+//				}).collect(Collectors.toList());
+//		Resources<RSAResourceSupport> resources = new Resources<RSAResourceSupport>(chapsResourceSuppurt);
+//		resources.add(linkTo(methodOn(ChapterController.class).getChapters(null)).withSelfRel());
+//		return resources;
+//	}
+	
 	@RequestMapping(produces="application/hal+json")
-	public Resources<RSAResourceSupport> getChapters(UriComponentsBuilder ucb){
+	public Resources<RSAResource> getChapters(UriComponentsBuilder ucb){
 		URI uriComponent = ucb.path("/chapters/").build().toUri();
-		List<RSAResourceSupport> chapsResourceSuppurt = chapterService.findAll().stream()
+		List<RSAResource> chapsResourceSuppurt = chapterService.findAll().stream()
 				.map(chap -> {
 					String path = uriComponent.toString()+chap.getId();
-					return new RSAResourceSupport(chap, path);
+					return new RSAResource(chap, path);
 				}).collect(Collectors.toList());
-		Resources<RSAResourceSupport> resources = new Resources<RSAResourceSupport>(chapsResourceSuppurt);
+		Resources<RSAResource> resources = new Resources<RSAResource>(chapsResourceSuppurt);
 		resources.add(linkTo(methodOn(ChapterController.class).getChapters(null)).withSelfRel());
 		return resources;
 	}

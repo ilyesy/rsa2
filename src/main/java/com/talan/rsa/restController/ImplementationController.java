@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 import com.talan.rsa.entity.Implementation;
-import com.talan.rsa.entity.resourceSupport.RSAResourceSupport;
+import com.talan.rsa.entity.resourceSupport.RSAResource;
 import com.talan.rsa.exception.EntityNotFoundException;
 import com.talan.rsa.service.ImplementationService;
 
@@ -29,16 +29,30 @@ public class ImplementationController {
 		this.implementationService = implementationService;
 	}
 	
-	@RequestMapping(produces="application/json")
-	public Resources<RSAResourceSupport> getImplementations(UriComponentsBuilder ucb){
+//	@RequestMapping(produces="application/json")
+//	public Resources<RSAResourceSupport> getImplementations(UriComponentsBuilder ucb){
+//		URI uriComponent = ucb.path("/imps/").build().toUri();
+//		List<RSAResourceSupport> impsResourceSupport = implementationService.findAll().stream()
+//				.map((imp) -> {
+//					String path = uriComponent.toString()+imp.getId();
+//					return new RSAResourceSupport(imp, path);
+//				})
+//				.collect(Collectors.toList());
+//		Resources<RSAResourceSupport> resources = new Resources<RSAResourceSupport>(impsResourceSupport);
+//		resources.add(linkTo(methodOn(ImplementationController.class).getImplementations(null)).withSelfRel());
+//		return resources;
+//	}
+	
+	@RequestMapping(produces="application/hal+json")
+	public Resources<RSAResource> getImplementations(UriComponentsBuilder ucb){
 		URI uriComponent = ucb.path("/imps/").build().toUri();
-		List<RSAResourceSupport> impsResourceSupport = implementationService.findAll().stream()
+		List<RSAResource> impsResourceSupport = implementationService.findAll().stream()
 				.map((imp) -> {
 					String path = uriComponent.toString()+imp.getId();
-					return new RSAResourceSupport(imp, path);
+					return new RSAResource(imp, path);
 				})
 				.collect(Collectors.toList());
-		Resources<RSAResourceSupport> resources = new Resources<RSAResourceSupport>(impsResourceSupport);
+		Resources<RSAResource> resources = new Resources<RSAResource>(impsResourceSupport);
 		resources.add(linkTo(methodOn(ImplementationController.class).getImplementations(null)).withSelfRel());
 		return resources;
 	}

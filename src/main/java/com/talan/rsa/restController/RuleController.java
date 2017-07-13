@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.talan.rsa.entity.Rule;
-import com.talan.rsa.entity.resourceSupport.RSAResourceSupport;
+import com.talan.rsa.entity.resourceSupport.RSAResource;
 import com.talan.rsa.exception.EntityNotFoundException;
 import com.talan.rsa.service.RuleService;
 
@@ -32,15 +32,28 @@ public class RuleController {
 		this.ruleService = ruleService;
 	}
 	
+//	@RequestMapping(produces="application/json")
+//	public Resources<RSAResourceSupport> getRules(UriComponentsBuilder ucb){
+//		URI uriComponent = ucb.path("/rules/").build().toUri();
+//		List<RSAResourceSupport> rulesResourcesSupport = ruleService.findAll().stream()
+//				.map(rule -> {
+//					String path = uriComponent.toString() + rule.getId();
+//					return new RSAResourceSupport(rule, path);
+//				}).collect(Collectors.toList());
+//		Resources<RSAResourceSupport> resources = new Resources<>(rulesResourcesSupport);
+//		resources.add(new Link(uriComponent.toString(), "self"));
+//		return resources;
+//	}
+	
 	@RequestMapping(produces="application/json")
-	public Resources<RSAResourceSupport> getRules(UriComponentsBuilder ucb){
+	public Resources<RSAResource> getRules(UriComponentsBuilder ucb){
 		URI uriComponent = ucb.path("/rules/").build().toUri();
-		List<RSAResourceSupport> rulesResourcesSupport = ruleService.findAll().stream()
+		List<RSAResource> rulesResourcesSupport = ruleService.findAll().stream()
 				.map(rule -> {
 					String path = uriComponent.toString() + rule.getId();
-					return new RSAResourceSupport(rule, path);
+					return new RSAResource(rule, path);
 				}).collect(Collectors.toList());
-		Resources<RSAResourceSupport> resources = new Resources<>(rulesResourcesSupport);
+		Resources<RSAResource> resources = new Resources<>(rulesResourcesSupport);
 		resources.add(new Link(uriComponent.toString(), "self"));
 		return resources;
 	}

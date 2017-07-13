@@ -16,7 +16,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.talan.rsa.exception.EntityNotFoundException;
 import com.talan.rsa.entity.Theme;
-import com.talan.rsa.entity.resourceSupport.RSAResourceSupport;
+import com.talan.rsa.entity.resourceSupport.RSAResource;
 import com.talan.rsa.service.ThemeService;
 
 @RestController
@@ -32,14 +32,26 @@ public class ThemeController {
 		this.themeService = themeService;
 	}
 	
+//	@RequestMapping(produces="application/json")
+//	public Resources<RSAResourceSupport> getThemes(UriComponentsBuilder ucb){
+//		URI uriComponent = ucb.path("/themes/").build().toUri();
+//		List<RSAResourceSupport> themesResourceSupport = themeService.findAll().stream().map(theme -> {
+//			String path = uriComponent.toString() + theme.getId();
+//			return new RSAResourceSupport(theme, path);
+//		}).collect(Collectors.toList());
+//		Resources<RSAResourceSupport> resources = new Resources<>(themesResourceSupport);
+//		resources.add(new Link(uriComponent.toString(), "self"));
+//		return resources;
+//	}
+	
 	@RequestMapping(produces="application/json")
-	public Resources<RSAResourceSupport> getThemes(UriComponentsBuilder ucb){
+	public Resources<RSAResource> getThemes(UriComponentsBuilder ucb){
 		URI uriComponent = ucb.path("/themes/").build().toUri();
-		List<RSAResourceSupport> themesResourceSupport = themeService.findAll().stream().map(theme -> {
+		List<RSAResource> themesResourceSupport = themeService.findAll().stream().map(theme -> {
 			String path = uriComponent.toString() + theme.getId();
-			return new RSAResourceSupport(theme, path);
+			return new RSAResource(theme, path);
 		}).collect(Collectors.toList());
-		Resources<RSAResourceSupport> resources = new Resources<>(themesResourceSupport);
+		Resources<RSAResource> resources = new Resources<>(themesResourceSupport);
 		resources.add(new Link(uriComponent.toString(), "self"));
 		return resources;
 	}
