@@ -32,19 +32,6 @@ public class RuleController {
 		this.ruleService = ruleService;
 	}
 	
-//	@RequestMapping(produces="application/json")
-//	public Resources<RSAResourceSupport> getRules(UriComponentsBuilder ucb){
-//		URI uriComponent = ucb.path("/rules/").build().toUri();
-//		List<RSAResourceSupport> rulesResourcesSupport = ruleService.findAll().stream()
-//				.map(rule -> {
-//					String path = uriComponent.toString() + rule.getId();
-//					return new RSAResourceSupport(rule, path);
-//				}).collect(Collectors.toList());
-//		Resources<RSAResourceSupport> resources = new Resources<>(rulesResourcesSupport);
-//		resources.add(new Link(uriComponent.toString(), "self"));
-//		return resources;
-//	}
-	
 	@RequestMapping(produces="application/json")
 	public Resources<RSAResource> getRules(UriComponentsBuilder ucb){
 		URI uriComponent = ucb.path("/rules/").build().toUri();

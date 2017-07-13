@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 import com.talan.rsa.entity.Implementation;
@@ -29,19 +28,6 @@ public class ImplementationController {
 		this.implementationService = implementationService;
 	}
 	
-//	@RequestMapping(produces="application/json")
-//	public Resources<RSAResourceSupport> getImplementations(UriComponentsBuilder ucb){
-//		URI uriComponent = ucb.path("/imps/").build().toUri();
-//		List<RSAResourceSupport> impsResourceSupport = implementationService.findAll().stream()
-//				.map((imp) -> {
-//					String path = uriComponent.toString()+imp.getId();
-//					return new RSAResourceSupport(imp, path);
-//				})
-//				.collect(Collectors.toList());
-//		Resources<RSAResourceSupport> resources = new Resources<RSAResourceSupport>(impsResourceSupport);
-//		resources.add(linkTo(methodOn(ImplementationController.class).getImplementations(null)).withSelfRel());
-//		return resources;
-//	}
 	
 	@RequestMapping(produces="application/hal+json")
 	public Resources<RSAResource> getImplementations(UriComponentsBuilder ucb){

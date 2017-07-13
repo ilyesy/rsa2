@@ -1,7 +1,5 @@
 package com.talan.rsa.entity;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -15,7 +13,7 @@ import com.talan.rsa.entity.other.ImplementationEnum;
 
 //@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity(name="implementations")
-public class Implementation implements Serializable{
+public class Implementation{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
