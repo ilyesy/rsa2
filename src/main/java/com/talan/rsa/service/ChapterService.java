@@ -8,7 +8,7 @@ public interface ChapterService {
 	
 	 List<Chapter> findAll();
 	 
-	 Chapter add(Chapter chapter);
+	 Chapter save(Chapter chapter);
 	 
 	 Chapter getById(long id);
 

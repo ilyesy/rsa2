@@ -25,7 +25,7 @@ public class ThemeServiceImp implements ThemeService{
 	}
 
 	@Override
-	public Theme add(Theme theme) {
+	public Theme save(Theme theme) {
 		return themeRepository.save(theme);
 	}
 

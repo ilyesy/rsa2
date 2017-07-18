@@ -77,6 +77,9 @@ public class Rule{
 	public Rule() {
 	}
 	
-	
+	public void copy(Rule copied){
+		this.description = copied.description;
+		this.title = copied.title;
+	}
 	
 }

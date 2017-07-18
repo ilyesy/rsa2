@@ -80,6 +80,10 @@ public class Implementation{
 		this.rule = rule;
 	}
 	
-	
+	public void copy(Implementation copied){
+		this.comment = copied.comment;
+		this.snippet = copied.snippet;
+		this.type = copied.type;
+	}
 
 }

@@ -32,7 +32,7 @@ public class ChapterServiceImp implements ChapterService {
 
 
 	@Override
-	public Chapter add(Chapter chapter) {
+	public Chapter save(Chapter chapter) {
 		return chapterRepository.save(chapter);
 	}
 

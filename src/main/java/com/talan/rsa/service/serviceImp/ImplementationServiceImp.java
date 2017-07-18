@@ -1,5 +1,6 @@
 package com.talan.rsa.service.serviceImp;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,13 +27,24 @@ public class ImplementationServiceImp implements ImplementationService {
 	}
 	
 	@Override
-	public Implementation add(Implementation imp) {
+	public Implementation save(Implementation imp) {
 		return implementationRepository.save(imp);
 	}
-
+	
 	@Override
 	public Implementation getById(long id) {
 		return implementationRepository.findOne(id);
+	}
+	
+	@Override
+	public List<Long> isImpsExist(List<Implementation> imps){
+		List<Long> notFound = new ArrayList<>();
+		imps.stream().forEach(imp -> {
+			if(implementationRepository.findOne(imp.getId()) == null){
+				notFound.add(imp.getId());
+			}
+		});
+		return notFound;
 	}
 
 }

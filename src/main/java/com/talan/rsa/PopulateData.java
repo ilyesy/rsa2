@@ -59,10 +59,12 @@ public class PopulateData implements ApplicationRunner {
 		Implementation imp2 = new Implementation("Implementation2", "comm2", ImplementationEnum.NotRecommendedImplementation, r1);
 		Implementation imp3 = new Implementation("Implementation3", "comm3", ImplementationEnum.RecommendedImplementation, r1);
 		Implementation imp4 = new Implementation("Implementation4", "comm4", ImplementationEnum.RecommendedImplementation, r1);
+		Implementation imp5 = new Implementation("Implementation5", "comm5", ImplementationEnum.RecommendedImplementation, null);
 		implementationRepo.save(imp1);
 		implementationRepo.save(imp2);
 		implementationRepo.save(imp3);
 		implementationRepo.save(imp4);
+		implementationRepo.save(imp5);
 		
 		
 	}

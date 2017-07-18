@@ -79,5 +79,9 @@ public class Chapter{
 	public Chapter() {		
 	}
 	
+	public void copy(Chapter copied){
+		this.title = copied.title;
+		this.description=copied.description;
+	}
 	
 }

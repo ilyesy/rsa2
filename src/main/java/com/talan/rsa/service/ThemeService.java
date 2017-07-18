@@ -8,7 +8,7 @@ public interface ThemeService {
 
 	 List<Theme> findAll();
 	
-	 Theme add(Theme theme);
+	 Theme save(Theme theme);
 	
 	 Theme getById(long id);
 }

@@ -1,24 +1,26 @@
 package com.talan.rsa.exception;
 
+import java.util.List;
+
 public class EntityNotFoundException extends RuntimeException{
 	
 
 	private static final long serialVersionUID = 1L;
 
-	private long entityId;
+	private List<Long> entityIds;
 	
 	private String entity;
 
-	public long getThemeId() {
-		return entityId;
+	public List<Long> getEntityIds() {
+		return entityIds;
 	}
 
 	public String getEntity() {
 		return entity;
 	}
 
-	public EntityNotFoundException(long id, String entity) {
-		this.entityId = id;
+	public EntityNotFoundException(List<Long> ids, String entity) {
+		this.entityIds = ids;
 		this.entity = entity;
 	}
 }

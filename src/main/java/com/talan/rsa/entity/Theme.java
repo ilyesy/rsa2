@@ -7,6 +7,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity(name="themes")
@@ -17,8 +19,9 @@ public class Theme{
     @Column(unique = true, nullable = false)
 	private long id;
 	
+	@NotNull
 	private String title;
-	
+		
 	private String description;
 	
 	@OneToMany(mappedBy="theme")
@@ -64,7 +67,10 @@ public class Theme{
 	public Theme() {
 	}
 	
-	
+	public void copy(Theme copied){
+		this.description = copied.description;
+		this.title = copied.title;
+	}
 	
 	
 }
