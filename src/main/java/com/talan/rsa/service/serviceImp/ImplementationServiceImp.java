@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.talan.rsa.entity.Implementation;
+import com.talan.rsa.entity.Rule;
 import com.talan.rsa.repository.ImplementationRepository;
 import com.talan.rsa.service.ImplementationService;
 
@@ -45,6 +46,16 @@ public class ImplementationServiceImp implements ImplementationService {
 			}
 		});
 		return notFound;
+	}
+
+	@Override
+	public void delete(long id) {
+		implementationRepository.delete(id);
+	}
+
+	@Override
+	public List<Implementation> findImpsByRule(long rule) {
+		return implementationRepository.findImpsByRule(rule);
 	}
 
 }

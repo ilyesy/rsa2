@@ -80,6 +80,8 @@ public class Rule{
 	public void copy(Rule copied){
 		this.description = copied.description;
 		this.title = copied.title;
+		this.chapter = copied.chapter;
+		this.implementations = copied.implementations;
 	}
 	
 }

@@ -14,4 +14,5 @@ public interface RuleService {
 	 Rule getById(long id);
 	 
 	 Rule addImpsToRule(List<Implementation>imps, Rule ruleToUpdate);
+	 
 }

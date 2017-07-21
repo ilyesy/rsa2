@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.talan.rsa.entity.other.Error;
+import com.talan.rsa.entity.other.RsaResponseBody;
 import com.talan.rsa.entity.other.ErrorMessageBuilder;
 import com.talan.rsa.exception.EntityNotFoundException;
 
@@ -22,7 +22,7 @@ public class ControllerAdvisor {
 	
 	@ExceptionHandler(EntityNotFoundException.class)
 	@ResponseStatus(HttpStatus.NOT_FOUND)
-	public Error themeNotFound(EntityNotFoundException e){
-		return new Error(NOT_FOUND_STATUS, emb.buildErrorMessage(e.getEntity(), e.getEntityIds()));
+	public RsaResponseBody themeNotFound(EntityNotFoundException e){
+		return new RsaResponseBody(NOT_FOUND_STATUS, emb.buildErrorMessage(e.getEntity(), e.getEntityIds()));
 	}
 }
