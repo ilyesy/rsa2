@@ -52,7 +52,7 @@ public class ImplementationController {
 		return resources;
 	}
 	
-	@RequestMapping("/{id}")
+	@RequestMapping(value = "/{id}" , produces = "application/hal+json")
 	public ImplementationResource getById(@PathVariable("id") long id){
 		Implementation imp = implementationService.getById(id);
 		if(imp == null){

@@ -1,4 +1,3 @@
-com\talan\rsa\entity\other\Error.class
 com\talan\rsa\service\RuleService.class
 com\talan\rsa\entity\Chapter.class
 com\talan\rsa\service\serviceImp\ImplementationServiceImp.class

@@ -1,0 +1,10 @@
+<div>
+rules page
+</div>
+
+<div ng-repeat=" rule in rlCtl.res._embedded.ruleList">
+	<a href="{{rule._links.self.href}}">{{rule.title}}
+	(
+	{{rule.description}}
+	)</a>
+</div>

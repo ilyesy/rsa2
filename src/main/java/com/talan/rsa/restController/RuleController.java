@@ -72,7 +72,7 @@ public class RuleController {
 		return ruleService.getById(rule.getId());
 	}
 
-	@RequestMapping(value = "/{id}")
+	@RequestMapping(value = "/{id}", produces = "application/json")
 	public RuleResource getById(@PathVariable("id") long id) {
 		Rule foundRule = ruleService.getById(id);
 		isRuleExist(id, foundRule);
