@@ -1,0 +1,9 @@
+<div>
+imps page
+</div>
+<div ng-repeat=" imp in impCtl.res._embedded.implementationList">
+	<a href="{{imp._links.self.href}}">{{imp.snippet}}
+	(
+	{{imp.type}}
+	)</a>
+</div>

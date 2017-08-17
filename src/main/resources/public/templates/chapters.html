@@ -1,0 +1,9 @@
+<div>
+chapters page
+</div>
+<div ng-repeat=" chap in chCtl.res._embedded.chapterList">
+	<a href="{{chap._links.self.href}}">{{chap.title}}
+	(
+	{{chap.description}}
+	)</a>
+</div>
