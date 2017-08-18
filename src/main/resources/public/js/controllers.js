@@ -2,6 +2,7 @@ angular.module('rsa')
 .controller('mainController', ['MainService', function(MainService) {
 	console.log('main controller');
 	var self = this;
+	
 }])
 .controller('chapterController', ['ChaptersService', function(ChaptersService) {
 	console.log('chapctl');
@@ -33,7 +34,7 @@ angular.module('rsa')
 	}, function(){})
 	}])
 	
-.controller('themeController', ['ThemesService','MainService', function(ThemesService,MainService) {
+.controller('themeController', ['ThemesService','MainService', 'UserService', function(ThemesService,MainService, UserService) {
 	var self = this;
 	self.res={}
 	ThemesService.getThemes().then(function(resp){
@@ -44,10 +45,11 @@ angular.module('rsa')
 	self.logout = function(){
 		console.log("logging out")
 		MainService.logout();
+		UserService.removeUser("rsacookie");
 	}
 	}])
 	
-	.controller('loginController', ['$http', 'MainService', function($http, MainService) {
+	.controller('loginController', ['$http', '$location','UserService', 'MainService', function($http, location, UserService, MainService) {
 	var self = this;
 	self.user={}
 	self.submit = function(){
@@ -73,17 +75,15 @@ angular.module('rsa')
 			    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 			})
 		.then(function(resp){
+			UserService.setUser(resp.data);
+			location.path("/")
 			console.log("logged in")
 			//console.log(resp.data);
 		}, function(resp){
 			console.log(resp)
 			console.log('sorry');
 		})
-	}
-	
-	
-	
-	
+	}	
 	}])
 	
 	

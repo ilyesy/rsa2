@@ -51,3 +51,18 @@ angular.module('rsa')
 	}
 	
 }])
+.service('UserService', ['$cookies', function(cookies){
+	
+	this.setUser = function(data){
+		cookies.put("rsacookie", data);
+		console.log(cookies.get("rsacookies"))
+	}
+	
+	this.removeUser = function(){
+		cookies.remove("rsacookie")
+	}
+	
+	this.isConnected = function(){
+		return cookies.get("rsacookies") == null;
+	}
+}])

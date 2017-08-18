@@ -27,7 +27,9 @@ public class AppSecurity extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable().authorizeRequests().antMatchers("/","/login").permitAll().anyRequest().authenticated()
+		http.csrf().disable().authorizeRequests().antMatchers("/","/login").permitAll()
+		//.antMatchers("/chapters").hasAnyAuthority("ROLE_ADMIN")
+		.anyRequest().authenticated()
 		
 		.and().exceptionHandling()
     	.authenticationEntryPoint(new Http401AuthenticationEntryPoint(""))
@@ -44,7 +46,7 @@ public class AppSecurity extends WebSecurityConfigurerAdapter {
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 	  web.ignoring().antMatchers("/js/**");
-	  web.ignoring().antMatchers("/templates/**");
+	  web.ignoring().antMatchers("/templates/**");	  
 	}
 
 }
