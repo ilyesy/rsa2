@@ -16,25 +16,75 @@
 
 	<script src="js/services.js"></script>
 	<script src="js/controllers.js"></script>
+	<style type="text/css">.sidebar1 {
+    background: #F17153;
+    /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(#F17153, #F58D63, #f1ab53);
+    /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#F17153, #F58D63, #f1ab53);
+    /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#F17153, #F58D63, #f1ab53);
+    /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#F17153, #F58D63, #f1ab53);
+    /* Standard syntax */
+    min-height: 100%;
+}</style>
 </head>
 
 <body ng-app="rsa">
 <h2>RSA</h2>
 
-<div class="navbar navbar-fixed-top" role="navigation">
-	<div class="container">
-		<ul class="list-inline">
-			<li class="list-inline-item"><a href="#/home" > home</a></li>
-			<li class="list-inline-item"><a href="#/themes" ng-if="isAuthenticated()"> themes</a></li>
-			<li class="list-inline-item"><a href="#/chapters" ng-if="isAuthenticated()"> chaps</a></li>
-			<li class="list-inline-item"><a href="#/rules" ng-if="isAuthenticated()"> rules</a></li>
-			<li class="list-inline-item"><a href="#/imps" ng-if="isAuthenticated()"> imps</a></li>
-			<li class="list-inline-item"><a href="#/login" ng-if="!isAuthenticated()"> login </a></li>
-			<li class="list-inline-item"><a href="#" ng-click="logout()" ng-if="isAuthenticated()"> logout </a></li>
-		</ul>
-	</div>
-</div>
+<!-- <div class="navbar navbar-fixed-top" role="navigation"> -->
+<!-- 	<div class="container"> -->
+<!-- 		<ul class="list-inline"> -->
+<!-- 			<li class="list-inline-item"><a href="#/home" > home</a></li> -->
+<!-- 			<li class="list-inline-item"><a href="#/themes" ng-if="isAuthenticated()"> themes</a></li> -->
+<!-- 			<li class="list-inline-item"><a href="#/chapters" ng-if="isAuthenticated()"> chaps</a></li> -->
+<!-- 			<li class="list-inline-item"><a href="#/rules" ng-if="isAuthenticated()"> rules</a></li> -->
+<!-- 			<li class="list-inline-item"><a href="#/imps" ng-if="isAuthenticated()"> imps</a></li> -->
+<!-- 			<li class="list-inline-item"></li> -->
+<!-- 			<li class="list-inline-item"></li> -->
+<!-- 		</ul> -->
+<!-- 	</div> -->
+<!-- </div> -->
 
-	<div ng-view></div>
+<!-- 	<div ng-view></div> -->
+
+
+
+
+<nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <a class="navbar-brand" href="#/home">Home</a>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="#/themes" ng-if="isAuthenticated()">Themes</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#/chapters" ng-if="isAuthenticated()">Chapters <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item ">
+        <a class="nav-link" href="#/rules" ng-if="isAuthenticated()">Rules <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item ">
+        <a class="nav-link" href="#/imps" ng-if="isAuthenticated()">Implementations <span class="sr-only">(current)</span></a>
+      </li>
+    
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+      <a class="navbar-brand" href="#/login" ng-if="!isAuthenticated()"> login </a>
+      <a class = "navbar-brand" href="#" ng-click="logout()" ng-if="isAuthenticated()"> logout </a>
+    </form>
+  </div>
+</nav>
+
+<div ng-view></div>
+
+
+
 </body>
 </html>
