@@ -1,30 +1,29 @@
 angular.module('rsa',['ngRoute', 'ngCookies'])
 .factory('responseObserver',
-		  ['$q', function responseObserver($q) {
+		  ['$q', '$rootScope', function responseObserver($q, $rootScope) {
 			
 			return {
 		        request: function (config) {
-		        	console.log(config)
 		            return config || $q.when(config);
 		        },
 		        requestError: function(request){
-		        	console.log(request)
 		            return $q.reject(request);
 		        },
 		        response: function (response) {
-		        	console.log("response ", response)
 		            return response || $q.when(response);
 		        },
 		        responseError: function (response) {
 		            if (response && response.status === 412) {
-		            	var message = {type: 'error', 'msg':'Problem in processing your request.'};
-		            	$rootScope.$emit('NotificationEvent', message);
-		            	$rootScope.logout();
+//		            	var message = {type: 'error', 'msg':'Problem in processing your request.'};
+//		            	$rootScope.$emit('NotificationEvent', message);
+//		            	$rootScope.logout();
 		            }
 		            if (response && response.status === 401) {
-		            	var message = {type: 'error', 'msg':'Invalid Login Credentials or Session Expired.'};
-		            	$rootScope.$emit('NotificationEvent', message);
-		            	$rootScope.logout();
+//		            	console.log("session expired")
+//		            	var message = {type: 'error', 'msg':'Invalid Login Credentials or Session Expired.'};
+//		            	$rootScope.$emit('NotificationEvent', message);
+//		            	console.log($rootScope)
+//		            	$rootScope.logout();
 		            }
 		            return $q.reject(response);
 		        }
@@ -32,39 +31,79 @@ angular.module('rsa',['ngRoute', 'ngCookies'])
 		    
 		}])
 .config(function($routeProvider, $httpProvider){
+	
 	$httpProvider.interceptors.push('responseObserver');
+	
 	$routeProvider.when('/chapters', {
 		templateUrl: 'templates/chapters.html',
 		controller: 'chapterController as chCtl',
+		data: {
+			public: false
+		}
 	});
 	
 	$routeProvider.when('/themes', {
 		templateUrl: 'templates/themes.html',
 		controller: 'themeController as thCtl',
+		data: {
+			public: false
+		}
 	});
 	
 	$routeProvider.when('/rules', {
 		templateUrl: 'templates/rules.html',
 		controller: 'ruleController as rlCtl',
+		data: {
+			public: false
+		}
 	});
 	
 	$routeProvider.when('/imps', {
 		templateUrl: 'templates/implementations.html',
 		controller: 'impController as impCtl',
+		data: {
+			public: false
+		}
 	});
 	
 	$routeProvider.when('/login', {
 		templateUrl: 'templates/login.html',
 		controller: 'loginController as logCtl',
+		data: {
+			public: true
+		}
 	});
 	
-//	$routeProvider.otherwise('/');
+	$routeProvider.when('/home', {
+		templateUrl: 'templates/home.html',
+		controller: 'homeController as homCtl',
+		data: {
+			public: true
+		}
+	});
+	
+	$routeProvider.otherwise('/home');
 })
 .config(['$locationProvider', function($locationProvider) {
   $locationProvider.hashPrefix('');
 }])
-.run(['$rootScope', 'UserService', function(rootScope, UserService){
-	rootScope.isConnected = function(){
-		return UserService.isConnected();
+.run(['$rootScope', 'UserService', '$location', function(rootScope, UserService, location){
+	rootScope.isAuthenticated = function(){
+			return UserService.isConnected();
+		}
+	
+	rootScope.$on('$routeChangeStart', function(event, next, current){
+		if(next.data){
+		var access = next.data.public
+		if(!access){
+			if(!UserService.isConnected()){
+				event.preventDefault()
+				location.path('/login')
+				}
+			}
+		}
+	})	
+	rootScope.logout = function(){
+		UserService.logout()
 	}
 }])

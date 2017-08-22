@@ -1,8 +1,6 @@
 angular.module('rsa')
-.controller('mainController', ['MainService', function(MainService) {
-	console.log('main controller');
-	var self = this;
-	
+.controller('homeController', ['UserService',  function(UserService) {
+	console.log('home controller');
 }])
 .controller('chapterController', ['ChaptersService', function(ChaptersService) {
 	console.log('chapctl');
@@ -21,7 +19,7 @@ angular.module('rsa')
 	self.res={};
 	ImpsService.getImps().then(function(resp){
 		self.res = resp.data
-		console.log(resp.data)
+		//console.log(resp.data)
 	},function(){})
 	}])
 	
@@ -30,7 +28,7 @@ angular.module('rsa')
 	self.res = {};
 	RulesService.getRules().then(function(resp){
 		self.res = resp.data
-		console.log(self.res)
+		//console.log(self.res)
 	}, function(){})
 	}])
 	
@@ -39,14 +37,10 @@ angular.module('rsa')
 	self.res={}
 	ThemesService.getThemes().then(function(resp){
 		self.res = resp.data;
-		console.log(resp.data)
+		//console.log(resp.data)
 	}, function(){
 	})
-	self.logout = function(){
-		console.log("logging out")
-		MainService.logout();
-		UserService.removeUser("rsacookie");
-	}
+	
 	}])
 	
 	.controller('loginController', ['$http', '$location','UserService', 'MainService', function($http, location, UserService, MainService) {
@@ -55,34 +49,9 @@ angular.module('rsa')
 	self.submit = function(){
 		
 		var requestStr;
-		 if (self.user) {
-			 //self.user = JSON.parse(self.user);
-			 for (var key in self.user) {
-				 if (requestStr) {
-					 requestStr += '&' + key + '=' + self.user[key];
-				 } else {
-					 requestStr = key + '=' + self.user[key];
-				 }
-			 	}
-			 }
-
-		 
+		requestStr = UserService.transformToFormData(self.user);
 		//$http.post('/login',{username: self.user.username, password: self.user.password}, {headers:{'Content-Type': 'application/x-www-form-urlencoded'}} )
-		$http({
-			    method: 'POST',
-			    url: '/login',
-			    data: requestStr,
-			    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-			})
-		.then(function(resp){
-			UserService.setUser(resp.data);
-			location.path("/")
-			console.log("logged in")
-			//console.log(resp.data);
-		}, function(resp){
-			console.log(resp)
-			console.log('sorry');
-		})
+		UserService.login(requestStr)
 	}	
 	}])
 	

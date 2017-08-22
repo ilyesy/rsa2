@@ -40,29 +40,65 @@ angular.module('rsa')
 ])
 .factory('MainService', ['$http', function($http){
 	return {
-		logout: function(){
-			 $http.post('/logout').then(function(response){
-	    		console.log('Successfully logged out on server');
-	  	    },function(resp){
-	  	    	console.log('log out fail')
-	  	    	console.log(resp)
-	  	    });
-		}
+		
 	}
 	
 }])
-.service('UserService', ['$cookies', function(cookies){
+.service('UserService', ['$http', '$cookies','$rootScope','$location', function(http, cookies, rootScope, location){
 	
-	this.setUser = function(data){
-		cookies.put("rsacookie", data);
-		console.log(cookies.get("rsacookies"))
+	var self = this;
+	
+	self.setUser = function(data){
+		cookies.put('authenticatedUser', 'sth');
 	}
 	
-	this.removeUser = function(){
-		cookies.remove("rsacookie")
+	self.removeUser = function(){
+		cookies.remove("authenticatedUser")
 	}
 	
-	this.isConnected = function(){
-		return cookies.get("rsacookies") == null;
+	self.isConnected = function(){
+		return cookies.get("authenticatedUser") != null;
+	}
+	
+	self.transformToFormData = function(user){
+		var requestStr;
+		 if (user) {
+			 //self.user = JSON.parse(self.user);
+			 for (var key in user) {
+				 if (requestStr) {
+					 requestStr += '&' + key + '=' + user[key];
+				 } else {
+					 requestStr = key + '=' + user[key];
+				 }
+			 	}
+			 }
+		 return requestStr;
+	}
+	
+	self.login = function(requestStr){
+		http({
+			    method: 'POST',
+			    url: '/login',
+			    data: requestStr,
+			    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+			})
+		.then(function(resp){
+			self.setUser(resp.data);
+			location.path("/")
+		}, function(resp){
+			console.log('sorry');
+		})
+	}
+	
+	self.logout = function(){
+		{	
+			 self.removeUser('authenticatedUser');
+			 http.post('/logout').then(function(response){
+	    		console.log('Successfully logged out on server');
+	  	    },function(resp){
+	  	    	console.log('log out fail')
+	  	    });
+		}
+
 	}
 }])
