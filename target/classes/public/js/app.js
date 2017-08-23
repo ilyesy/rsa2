@@ -1,6 +1,6 @@
 angular.module('rsa',['ngRoute', 'ngCookies', 'ngMaterial'])
 .factory('responseObserver',
-		  ['$q', '$rootScope', '$injector', function responseObserver($q, $rootScope, $injector) {
+		  ['$q', '$rootScope','$injector', '$injector', '$location', function responseObserver($q, $rootScope, injector, $injector, location) {
 
 			return {
 		        request: function (config) {
@@ -20,6 +20,24 @@ angular.module('rsa',['ngRoute', 'ngCookies', 'ngMaterial'])
 //		            	var SessionStateService = $injector.get('SessionStateService')
 //		            	console.log('Invalid Login Credentials or Session Expired')
 //		            	SessionStateService.getSessionState();
+		            	var mdDialog = $injector.get('$mdDialog')
+		            	var UserService = $injector.get('UserService')
+						console.log('trying my best')
+						console.log('session died')
+						var confirm = mdDialog.confirm()
+				          .title('Would you like to login ?')
+				          .textContent('Your session has expired')
+				          .ariaLabel('session expired')
+				          .ok('Login')
+				          .cancel('Home page');
+
+				    mdDialog.show(confirm).then(function() {
+				    	UserService.removeUser('authenticatedUser');
+				    	location.path('/login')
+				    }, function() {
+				    	UserService.removeUser('authenticatedUser');
+				    	location.path('/home');
+				    	});
 		            }
 		            return $q.reject(response);
 		        }
@@ -36,12 +54,12 @@ angular.module('rsa',['ngRoute', 'ngCookies', 'ngMaterial'])
 		data: {
 			public: false
 		},
-		resolve: {
-			checkSession: ['SessionStateService', function(SessionStateService){
-				console.log('lkjflskjfdlskjdflk')
-				 SessionStateService.getSessionState();
-			}]
-		}
+//		resolve: {
+//			checkSession: ['SessionStateService', function(SessionStateService){
+//				console.log('lkjflskjfdlskjdflk')
+//				 SessionStateService.getSessionState();
+//			}]
+//		}
 	});
 	
 	$routeProvider.when('/themes', {

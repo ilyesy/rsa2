@@ -101,30 +101,30 @@ angular.module('rsa')
 		}
 	}
 }])
-.service('SessionStateService', 
-				[ '$http', '$mdDialog', '$location', 'UserService', function(http, mdDialog, location, UserService) {
-					console.log('just doing my job')
-					var self = this;
-					this.getSessionState = function() {
-						http.get('/session').then(function(resp) {}, 
-					    function() {
-							console.log('trying my best')
-							console.log('session died')
-							var confirm = mdDialog.confirm()
-					          .title('Would you like to login ?')
-					          .textContent('Your session has expired')
-					          .ariaLabel('session expired')
-					          .ok('Login')
-					          .cancel('Home page');
-
-					    mdDialog.show(confirm).then(function() {
-					    	UserService.removeUser('authenticatedUser');
-					    	location.path('/login')
-					    }, function() {
-					    	UserService.removeUser('authenticatedUser');
-					    	location.path('/home');
-					    	});
-						}
-						)
-					}
-}])
+//.service('SessionStateService', 
+//				[ '$http', '$mdDialog', '$location', 'UserService', function(http, mdDialog, location, UserService) {
+//					console.log('just doing my job')
+//					var self = this;
+//					this.getSessionState = function() {
+//						http.get('/session').then(function(resp) {}, 
+//					    function() {
+//							console.log('trying my best')
+//							console.log('session died')
+//							var confirm = mdDialog.confirm()
+//					          .title('Would you like to login ?')
+//					          .textContent('Your session has expired')
+//					          .ariaLabel('session expired')
+//					          .ok('Login')
+//					          .cancel('Home page');
+//
+//					    mdDialog.show(confirm).then(function() {
+//					    	UserService.removeUser('authenticatedUser');
+//					    	location.path('/login')
+//					    }, function() {
+//					    	UserService.removeUser('authenticatedUser');
+//					    	location.path('/home');
+//					    	});
+//						}
+//						)
+//					}
+//}])
