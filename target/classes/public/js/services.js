@@ -44,7 +44,7 @@ angular.module('rsa')
 	}
 	
 }])
-.service('UserService', ['$http', '$cookies','$rootScope','$location', function(http, cookies, rootScope, location){
+.service('UserService', ['$http', '$cookies','$rootScope','$location', '$cookieStore', function(http, cookies, rootScope, location, cookieStore){
 	
 	var self = this;
 	
@@ -99,6 +99,32 @@ angular.module('rsa')
 	  	    	console.log('log out fail')
 	  	    });
 		}
-
 	}
+}])
+.service('SessionStateService', 
+				[ '$http', '$mdDialog', '$location', 'UserService', function(http, mdDialog, location, UserService) {
+					console.log('just doing my job')
+					var self = this;
+					this.getSessionState = function() {
+						http.get('/session').then(function(resp) {}, 
+					    function() {
+							console.log('trying my best')
+							console.log('session died')
+							var confirm = mdDialog.confirm()
+					          .title('Would you like to login ?')
+					          .textContent('Your session has expired')
+					          .ariaLabel('session expired')
+					          .ok('Login')
+					          .cancel('Home page');
+
+					    mdDialog.show(confirm).then(function() {
+					    	UserService.removeUser('authenticatedUser');
+					    	location.path('/login')
+					    }, function() {
+					    	UserService.removeUser('authenticatedUser');
+					    	location.path('/home');
+					    	});
+						}
+						)
+					}
 }])

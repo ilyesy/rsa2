@@ -2,7 +2,8 @@ angular.module('rsa')
 .controller('homeController', ['UserService',  function(UserService) {
 	console.log('home controller');
 }])
-.controller('chapterController', ['ChaptersService', function(ChaptersService) {
+.controller('chapterController', ['ChaptersService'/*, 'SessionStateService','checkSession'*/, function(ChaptersService/*, SessionStateService, checkSession*/) {
+//	SessionStateService.getSessionState();
 	console.log('chapctl');
 	var self = this;
 	self.res={};

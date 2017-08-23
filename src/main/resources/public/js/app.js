@@ -1,7 +1,7 @@
-angular.module('rsa',['ngRoute', 'ngCookies'])
+angular.module('rsa',['ngRoute', 'ngCookies', 'ngMaterial'])
 .factory('responseObserver',
-		  ['$q', '$rootScope', function responseObserver($q, $rootScope) {
-			
+		  ['$q', '$rootScope', '$injector', function responseObserver($q, $rootScope, $injector) {
+
 			return {
 		        request: function (config) {
 		            return config || $q.when(config);
@@ -14,16 +14,12 @@ angular.module('rsa',['ngRoute', 'ngCookies'])
 		        },
 		        responseError: function (response) {
 		            if (response && response.status === 412) {
-//		            	var message = {type: 'error', 'msg':'Problem in processing your request.'};
-//		            	$rootScope.$emit('NotificationEvent', message);
-//		            	$rootScope.logout();
+		            	console.log('response error')
 		            }
 		            if (response && response.status === 401) {
-//		            	console.log("session expired")
-//		            	var message = {type: 'error', 'msg':'Invalid Login Credentials or Session Expired.'};
-//		            	$rootScope.$emit('NotificationEvent', message);
-//		            	console.log($rootScope)
-//		            	$rootScope.logout();
+//		            	var SessionStateService = $injector.get('SessionStateService')
+//		            	console.log('Invalid Login Credentials or Session Expired')
+//		            	SessionStateService.getSessionState();
 		            }
 		            return $q.reject(response);
 		        }
@@ -39,6 +35,12 @@ angular.module('rsa',['ngRoute', 'ngCookies'])
 		controller: 'chapterController as chCtl',
 		data: {
 			public: false
+		},
+		resolve: {
+			checkSession: ['SessionStateService', function(SessionStateService){
+				console.log('lkjflskjfdlskjdflk')
+				 SessionStateService.getSessionState();
+			}]
 		}
 	});
 	
@@ -87,23 +89,26 @@ angular.module('rsa',['ngRoute', 'ngCookies'])
 .config(['$locationProvider', function($locationProvider) {
   $locationProvider.hashPrefix('');
 }])
-.run(['$rootScope', 'UserService', '$location', function(rootScope, UserService, location){
+.run(['$rootScope', 'UserService', '$location', '$cookies', function(rootScope, UserService, location, cookies){
 	rootScope.isAuthenticated = function(){
 			return UserService.isConnected();
 		}
 	
 	rootScope.$on('$routeChangeStart', function(event, next, current){
+//		if(cookies.get("SESSION") != undefined && location.path() != "/login"){
+//			location.path('/login')
+//		}
 		if(next.data){
-		var access = next.data.public
-		if(!access){
-			if(!UserService.isConnected()){
-				event.preventDefault()
-				location.path('/login')
+			var access = next.data.public
+			if(!access){
+				if(!UserService.isConnected()){
+					event.preventDefault();
+					location.path('/login');
+					}
 				}
-			}
 		}
 	})	
 	rootScope.logout = function(){
-		UserService.logout()
+		UserService.logout();
 	}
 }])
