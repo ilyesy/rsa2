@@ -2,9 +2,12 @@ angular.module('rsa')
 .controller('homeController', ['UserService',  function(UserService) {
 	console.log('home controller');
 }])
-.controller('chapterController', ['ChaptersService'/*, 'SessionStateService','checkSession'*/, function(ChaptersService/*, SessionStateService, checkSession*/) {
-//	SessionStateService.getSessionState();
-	console.log('chapctl');
+.controller('chapterController', ['ChaptersService', '$http', function(ChaptersService, http) {
+	var list = 	http.get('/chapters').then(function(resp){
+		list = resp.data
+		console.log(list)
+	})
+	console.log(list)
 	var self = this;
 	self.res={};
 	ChaptersService.getChapters().then(function(resp){
@@ -54,6 +57,9 @@ angular.module('rsa')
 		//$http.post('/login',{username: self.user.username, password: self.user.password}, {headers:{'Content-Type': 'application/x-www-form-urlencoded'}} )
 		UserService.login(requestStr)
 	}	
+	}])
+	.controller('AdminController', [function(){
+		console.log("administration")
 	}])
 	
 	

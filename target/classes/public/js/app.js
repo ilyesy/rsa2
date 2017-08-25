@@ -1,8 +1,8 @@
 angular.module('rsa',['ngRoute', 'ngCookies', 'ngMaterial'])
 .factory('responseObserver',
-		  ['$q', '$rootScope','$injector', '$injector', '$location', function responseObserver($q, $rootScope, injector, $injector, location) {
-
+		  ['$q', '$rootScope','$injector', function responseObserver($q, $rootScope, injector) {
 			return {
+								
 		        request: function (config) {
 		            return config || $q.when(config);
 		        },
@@ -14,30 +14,10 @@ angular.module('rsa',['ngRoute', 'ngCookies', 'ngMaterial'])
 		        },
 		        responseError: function (response) {
 		            if (response && response.status === 412) {
-		            	console.log('response error')
 		            }
 		            if (response && response.status === 401) {
-//		            	var SessionStateService = $injector.get('SessionStateService')
-//		            	console.log('Invalid Login Credentials or Session Expired')
-//		            	SessionStateService.getSessionState();
-		            	var mdDialog = $injector.get('$mdDialog')
-		            	var UserService = $injector.get('UserService')
-						console.log('trying my best')
-						console.log('session died')
-						var confirm = mdDialog.confirm()
-				          .title('Would you like to login ?')
-				          .textContent('Your session has expired')
-				          .ariaLabel('session expired')
-				          .ok('Login')
-				          .cancel('Home page');
-
-				    mdDialog.show(confirm).then(function() {
-				    	UserService.removeUser('authenticatedUser');
-				    	location.path('/login')
-				    }, function() {
-				    	UserService.removeUser('authenticatedUser');
-				    	location.path('/home');
-				    	});
+		            	var SessionStateService = injector.get('SessionStateService')
+		            	SessionStateService.notAuthenticated401PopUp()
 		            }
 		            return $q.reject(response);
 		        }
@@ -52,7 +32,7 @@ angular.module('rsa',['ngRoute', 'ngCookies', 'ngMaterial'])
 		templateUrl: 'templates/chapters.html',
 		controller: 'chapterController as chCtl',
 		data: {
-			public: false
+			authorized: []
 		},
 //		resolve: {
 //			checkSession: ['SessionStateService', function(SessionStateService){
@@ -66,15 +46,16 @@ angular.module('rsa',['ngRoute', 'ngCookies', 'ngMaterial'])
 		templateUrl: 'templates/themes.html',
 		controller: 'themeController as thCtl',
 		data: {
-			public: false
+			authorized: []
 		}
+		
 	});
 	
 	$routeProvider.when('/rules', {
 		templateUrl: 'templates/rules.html',
 		controller: 'ruleController as rlCtl',
 		data: {
-			public: false
+			authorized: []
 		}
 	});
 	
@@ -82,7 +63,7 @@ angular.module('rsa',['ngRoute', 'ngCookies', 'ngMaterial'])
 		templateUrl: 'templates/implementations.html',
 		controller: 'impController as impCtl',
 		data: {
-			public: false
+			authorized: []
 		}
 	});
 	
@@ -90,7 +71,7 @@ angular.module('rsa',['ngRoute', 'ngCookies', 'ngMaterial'])
 		templateUrl: 'templates/login.html',
 		controller: 'loginController as logCtl',
 		data: {
-			public: true
+			authorized: []
 		}
 	});
 	
@@ -98,35 +79,41 @@ angular.module('rsa',['ngRoute', 'ngCookies', 'ngMaterial'])
 		templateUrl: 'templates/home.html',
 		controller: 'homeController as homCtl',
 		data: {
-			public: true
+			authorized: []
 		}
 	});
+	
+	$routeProvider.when('/admin', {
+		templateUrl: "templates/admin.html",
+		controller: "AdminController as admCtl",
+			data: {
+			authorized: ["ROLE_ADMIN"]
+		}
+	})
 	
 	$routeProvider.otherwise('/home');
 })
 .config(['$locationProvider', function($locationProvider) {
   $locationProvider.hashPrefix('');
 }])
-.run(['$rootScope', 'UserService', '$location', '$cookies', function(rootScope, UserService, location, cookies){
+.run(['$rootScope', 'UserService', '$location', '$cookies','$http', '$q', function(rootScope, UserService, location, cookies, http, $q){
 	rootScope.isAuthenticated = function(){
 			return UserService.isConnected();
 		}
 	
-	rootScope.$on('$routeChangeStart', function(event, next, current){
-//		if(cookies.get("SESSION") != undefined && location.path() != "/login"){
-//			location.path('/login')
-//		}
-		if(next.data){
-			var access = next.data.public
-			if(!access){
-				if(!UserService.isConnected()){
-					event.preventDefault();
-					location.path('/login');
-					}
-				}
-		}
-	})	
+	
+	
 	rootScope.logout = function(){
 		UserService.logout();
 	}
+	
+	var i = -1
+	
+	rootScope.hasAuthorization = function(path){
+		var request = new XMLHttpRequest();
+		request.open('GET', '/principal', false);  // `false` makes the request synchronous
+		request.send(null);
+
+		return request.responseText}
+	
 }])

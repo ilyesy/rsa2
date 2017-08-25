@@ -1,8 +1,14 @@
 package com.talan.rsa.restController;
 
+import java.security.Principal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.servlet.http.HttpSession;
 
-import org.springframework.stereotype.Controller;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,5 +19,11 @@ public class HomeController {
 	public String getSessionStatus(HttpSession session) {
 			System.out.println("session call");
 		return "";
+	}
+	
+	@RequestMapping(value = "/principal", produces="application/json")
+	public Principal getPrincipal(Principal p){
+		System.out.println("i have been called");
+		return p;
 	}
 }

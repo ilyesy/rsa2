@@ -28,7 +28,7 @@ public class AppSecurity extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable().authorizeRequests().antMatchers("/","/login").permitAll()
+		http.csrf().disable().authorizeRequests().antMatchers("/", "/login", "/principal").permitAll()
 		//.antMatchers("/chapters").hasAnyAuthority("ROLE_ADMIN")
 		.anyRequest().authenticated()
 		
