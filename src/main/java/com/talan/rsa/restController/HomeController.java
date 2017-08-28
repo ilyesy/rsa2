@@ -22,8 +22,7 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value = "/principal", produces="application/json")
-	public Principal getPrincipal(Principal p){
-		System.out.println("i have been called");
-		return p;
+	public List<String> getPrincipal(Authentication p){
+		return p.getAuthorities().stream().map(role -> role.getAuthority()).collect(Collectors.toList());
 	}
 }

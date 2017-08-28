@@ -48,7 +48,6 @@ angular.module('rsa',['ngRoute', 'ngCookies', 'ngMaterial'])
 		data: {
 			authorized: []
 		}
-		
 	});
 	
 	$routeProvider.when('/rules', {
@@ -96,24 +95,39 @@ angular.module('rsa',['ngRoute', 'ngCookies', 'ngMaterial'])
 .config(['$locationProvider', function($locationProvider) {
   $locationProvider.hashPrefix('');
 }])
-.run(['$rootScope', 'UserService', '$location', '$cookies','$http', '$q', function(rootScope, UserService, location, cookies, http, $q){
+.run(['$rootScope', 'UserService', '$location', function(rootScope, UserService, location){
 	rootScope.isAuthenticated = function(){
 			return UserService.isConnected();
 		}
-	
 	
 	
 	rootScope.logout = function(){
 		UserService.logout();
 	}
 	
-	var i = -1
+	
+	rootScope.$on('$routeChangeStart', function(event, next, current){
+		console.log(next.$$route.data.authorized.length)
+		if(next.$$route.data.authorized.length){
+			var path = next.originalPath
+			console.log(path)
+			console.log(UserService.hasAuthorization(path))
+			if(!UserService.hasAuthorization(path)){
+				event.preventDefault()
+				location.path('/login')
+			}
+		}
+	})
+	
 	
 	rootScope.hasAuthorization = function(path){
-		var request = new XMLHttpRequest();
-		request.open('GET', '/principal', false);  // `false` makes the request synchronous
-		request.send(null);
-
-		return request.responseText}
+		
+		return UserService.hasAuthorization(path)
+//		var request = new XMLHttpRequest();
+//		request.open('GET', '/principal', false);  // `false` makes the request synchronous
+//		request.send(null);
+//
+//		return request.responseText
+		}
 	
 }])

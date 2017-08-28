@@ -48,16 +48,34 @@ angular.module('rsa')
 	
 	var self = this;
 	
-	self.setUser = function(data){
-		cookies.put('authenticatedUser', 'sth');
+	self.addToCookie = function(key, value){
+		cookies.put(key, value);
 	}
 	
 	self.removeUser = function(){
 		cookies.remove("authenticatedUser")
+		cookies.remove("roles")
 	}
 	
 	self.isConnected = function(){
 		return cookies.get("authenticatedUser") != null;
+	}
+	
+	self.hasAuthorization = function(path){
+		var roles = cookies.getObject('roles')
+		if(roles){
+			var authorizedRoles = route.routes[path].data.authorized;
+			var isAuthorized = false;
+			var role
+			for(role in roles){
+				if(authorizedRoles.indexOf(roles[role]) != -1){
+					isAuthorized = true;
+				}
+			}
+//			console.log(isAuthorized)
+			return isAuthorized;
+		}
+		else return false;
 	}
 	
 	self.transformToFormData = function(user){
@@ -83,10 +101,12 @@ angular.module('rsa')
 			    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 			})
 		.then(function(resp){
-			self.setUser(resp.data);
-			location.path("/")
+			self.addToCookie('authenticatedUser', 'user');
+			http.get('/principal').then(function(resp){
+				cookies.putObject('roles', resp.data )
+			})
+			location.path("/");
 		}, function(resp){
-			console.log('sorry');
 		})
 	}
 	
@@ -101,28 +121,6 @@ angular.module('rsa')
 		}
 	}
 	
-//	self.getRoles = function(){
-//		var roles = []
-//		
-//		http.get("/principal")
-//		return roles
-//	}
-	
-	self.hasAuthorization = function(path){
-		http.get("/chapters").then(function(){
-			console.log( "tabban !!" );
-		})
-//		var authorizedRoles = route.routes[path].data.authorized;
-//		var isAuthorized = false;
-//		var role
-//		for(role in roles){
-//			if(authorizedRoles.indexOf(role) != -1){
-//				isAuthorized = true;
-//			}
-//		}
-//		return isAuthorized;
-		return [];
-	}
 	
 }])
 .service('SessionStateService', 
@@ -140,7 +138,7 @@ angular.module('rsa')
 							mdDialog.show(confirm).then(function() {
 					    	UserService.removeUser('authenticatedUser');
 					    	location.path('/login')
-					    }, function() {
+					    }, function(){
 					    	UserService.removeUser('authenticatedUser');
 					    	location.path('/home');
 					    	});

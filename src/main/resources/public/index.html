@@ -50,33 +50,31 @@
   </button>
   <a class="navbar-brand" href="#/home">Home</a>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+  <div class="collapse navbar-collapse" id="navbarSupportedContent" >
     <ul class="navbar-nav mr-auto" >
-      <li class="nav-item">
-        <a class="nav-link" href="#/themes" >Themes</a>
+      <li class="nav-item"  ng-if="isAuthenticated()">
+        <a class="nav-link" href="#/themes">Themes</a>
       </li>
-      <li class="nav-item">
+      <li class="nav-item"  ng-if="isAuthenticated()">
         <a class="nav-link" href="#/chapters" >Chapters <span class="sr-only">(current)</span></a>
       </li>
-      <li class="nav-item ">
+      <li class="nav-item "  ng-if="isAuthenticated()">
         <a class="nav-link" href="#/rules" >Rules <span class="sr-only">(current)</span></a>
       </li>
-      <li class="nav-item ">
+      <li class="nav-item "  ng-if="isAuthenticated()">
         <a class="nav-link" href="#/imps" >Implementations <span class="sr-only">(current)</span></a>
       </li>
     
     </ul>
     <form class="form-inline my-2 my-lg-0">
-      <a class = "navbar-brand" href="#/admin" ng-if="hasAuthorization('dssd')"> Administration </a>
-      <a class="navbar-brand" href="#/login" > login </a>
+      <a class = "navbar-brand" href="#/admin" ng-if="hasAuthorization('/admin') && isAuthenticated()"> Administration </a>
+      <a class="navbar-brand" href="#/login" ng-if="!isAuthenticated()"> login </a>
       <a class = "navbar-brand" href="#" ng-click="logout()" ng-if="isAuthenticated()"> logout </a>
     </form>
   </div>
 </nav>
 
 <div ng-view></div>
-
-
 
 </body>
 </html>

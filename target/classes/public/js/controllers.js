@@ -3,18 +3,13 @@ angular.module('rsa')
 	console.log('home controller');
 }])
 .controller('chapterController', ['ChaptersService', '$http', function(ChaptersService, http) {
-	var list = 	http.get('/chapters').then(function(resp){
-		list = resp.data
-		console.log(list)
-	})
-	console.log(list)
+
 	var self = this;
 	self.res={};
 	ChaptersService.getChapters().then(function(resp){
 		self.res = resp.data
 		console.log('ok')
 	},function(){})
-		
 	}])
 	
 .controller('impController', ['ImpsService', function(ImpsService) {
@@ -23,7 +18,6 @@ angular.module('rsa')
 	self.res={};
 	ImpsService.getImps().then(function(resp){
 		self.res = resp.data
-		//console.log(resp.data)
 	},function(){})
 	}])
 	
@@ -32,7 +26,6 @@ angular.module('rsa')
 	self.res = {};
 	RulesService.getRules().then(function(resp){
 		self.res = resp.data
-		//console.log(self.res)
 	}, function(){})
 	}])
 	
@@ -41,7 +34,6 @@ angular.module('rsa')
 	self.res={}
 	ThemesService.getThemes().then(function(resp){
 		self.res = resp.data;
-		//console.log(resp.data)
 	}, function(){
 	})
 	
