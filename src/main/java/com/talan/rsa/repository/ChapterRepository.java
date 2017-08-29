@@ -10,8 +10,4 @@ import com.talan.rsa.entity.Chapter;
 
 @Repository
 public interface ChapterRepository extends JpaRepository<Chapter, Long> {
-	
-	@Query("select c from chapters c where c.id = 2")
-	public List<Chapter> chaps(long id);
-
 }

@@ -37,7 +37,6 @@ public class ChapterController {
 		this.chapterService = chapterService;
 	}
 
-	@Secured("ROLE_ADMIN")
 	@RequestMapping(produces="application/hal+json")
 	public Resources<ChapterResource> getChapters(UriComponentsBuilder ucb){
 		URI uriComponent = ucb.path("/chapters/").build().toUri();

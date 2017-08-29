@@ -2,9 +2,17 @@
 rules page
 </div>
 
-<div ng-repeat=" rule in rlCtl.res._embedded.ruleList">
-	<a href="{{rule._links.self.href}}">{{rule.title}}
-	(
-	{{rule.description}}
-	)</a>
+<div>	
+	<table class="table">
+		<tr class="thead-inverse">
+			<th>title</th>
+			<th>description</th>
+			<th></th>
+		</tr>
+		<tr ng-repeat="rule in rlCtl.res._embedded.ruleList">
+			<td>{{rule.title}}</td>
+			<td>{{rule.description}}</td>
+			<td><a href="{{rule._links.self.href}}">see</a></td>
+		</tr>
+	</table>
 </div>

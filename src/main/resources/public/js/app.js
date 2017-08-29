@@ -1,4 +1,5 @@
 angular.module('rsa',['ngRoute', 'ngCookies', 'ngMaterial'])
+
 .factory('responseObserver',
 		  ['$q', '$rootScope','$injector', function responseObserver($q, $rootScope, injector) {
 			return {
@@ -31,44 +32,44 @@ angular.module('rsa',['ngRoute', 'ngCookies', 'ngMaterial'])
 	$routeProvider.when('/chapters', {
 		templateUrl: 'templates/chapters.html',
 		controller: 'chapterController as chCtl',
+		activeTab: 'chapters',
 		data: {
-			authorized: []
-		},
-//		resolve: {
-//			checkSession: ['SessionStateService', function(SessionStateService){
-//				console.log('lkjflskjfdlskjdflk')
-//				 SessionStateService.getSessionState();
-//			}]
-//		}
+			authorized: ["ROLE_USER", "ROLE_ADMIN"]
+		}
+
 	});
 	
 	$routeProvider.when('/themes', {
 		templateUrl: 'templates/themes.html',
 		controller: 'themeController as thCtl',
+		activeTab: 'themes',
 		data: {
-			authorized: []
+			authorized: ["ROLE_ADMIN"]
 		}
 	});
 	
 	$routeProvider.when('/rules', {
 		templateUrl: 'templates/rules.html',
 		controller: 'ruleController as rlCtl',
+		activeTab: 'rules',
 		data: {
-			authorized: []
+			authorized: ["ROLE_USER", "ROLE_ADMIN"]
 		}
 	});
 	
 	$routeProvider.when('/imps', {
 		templateUrl: 'templates/implementations.html',
 		controller: 'impController as impCtl',
+		activeTab: 'imps',
 		data: {
-			authorized: []
+			authorized: ["ROLE_USER", "ROLE_ADMIN"]
 		}
 	});
 	
 	$routeProvider.when('/login', {
 		templateUrl: 'templates/login.html',
 		controller: 'loginController as logCtl',
+		activeTab: 'login',
 		data: {
 			authorized: []
 		}
@@ -77,6 +78,7 @@ angular.module('rsa',['ngRoute', 'ngCookies', 'ngMaterial'])
 	$routeProvider.when('/home', {
 		templateUrl: 'templates/home.html',
 		controller: 'homeController as homCtl',
+		activeTab: 'home',
 		data: {
 			authorized: []
 		}
@@ -85,8 +87,17 @@ angular.module('rsa',['ngRoute', 'ngCookies', 'ngMaterial'])
 	$routeProvider.when('/admin', {
 		templateUrl: "templates/admin.html",
 		controller: "AdminController as admCtl",
+		activeTab: 'admin',
 			data: {
 			authorized: ["ROLE_ADMIN"]
+		}
+	})
+	
+	$routeProvider.when('/error', {
+		templateUrl: "templates/error.html",
+//		controller: " as admCtl",
+			data: {
+			authorized: []
 		}
 	})
 	
@@ -95,7 +106,7 @@ angular.module('rsa',['ngRoute', 'ngCookies', 'ngMaterial'])
 .config(['$locationProvider', function($locationProvider) {
   $locationProvider.hashPrefix('');
 }])
-.run(['$rootScope', 'UserService', '$location', function(rootScope, UserService, location){
+.run(['$rootScope', 'UserService', '$location', '$http', '$route', function(rootScope, UserService, location, http, route){
 	rootScope.isAuthenticated = function(){
 			return UserService.isConnected();
 		}
@@ -105,29 +116,23 @@ angular.module('rsa',['ngRoute', 'ngCookies', 'ngMaterial'])
 		UserService.logout();
 	}
 	
-	
 	rootScope.$on('$routeChangeStart', function(event, next, current){
-		console.log(next.$$route.data.authorized.length)
 		if(next.$$route.data.authorized.length){
 			var path = next.originalPath
-			console.log(path)
-			console.log(UserService.hasAuthorization(path))
 			if(!UserService.hasAuthorization(path)){
-				event.preventDefault()
-				location.path('/login')
+				//event.preventDefault()
+				location.path('/error')
 			}
 		}
 	})
 	
 	
 	rootScope.hasAuthorization = function(path){
-		
 		return UserService.hasAuthorization(path)
-//		var request = new XMLHttpRequest();
-//		request.open('GET', '/principal', false);  // `false` makes the request synchronous
-//		request.send(null);
-//
-//		return request.responseText
 		}
+	
+	 
+	rootScope.route = route;
+	
 	
 }])

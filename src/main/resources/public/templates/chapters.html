@@ -1,9 +1,17 @@
 <div>
 chapters page
 </div>
-<div ng-repeat=" chap in chCtl.res._embedded.chapterList">
-	<a href="{{chap._links.self.href}}">{{chap.title}}
-	(
-	{{chap.description}}
-	)</a>
+<div >
+	<table class="table">
+		<tr class="thead-inverse">
+			<th>title</th>
+			<th>description</th>
+			<th></th>
+		</tr>
+		<tr ng-repeat="chap in chCtl.res._embedded.chapterList">
+			<td>{{chap.title}}</td>
+			<td>{{chap.description}}</td>
+			<td><a href="{{chap._links.self.href}}">see</a></td>
+		</tr>
+	</table>
 </div>

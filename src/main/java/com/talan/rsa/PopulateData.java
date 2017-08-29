@@ -34,8 +34,26 @@ public class PopulateData implements ApplicationRunner {
 		
 		Theme th1 = new Theme("java", "typed lang / oop", null);
 		Theme th2 = new Theme("js", "interprated", null);
+		Theme th3 = new Theme("C#", "oop", null);
+		Theme th4 = new Theme("C", "procedural", null);
+		Theme th5 = new Theme("Prolog", "functionnal", null);
+		Theme th6 = new Theme("html", "HyperText Markup Language", null);
+		Theme th7 = new Theme("C++", "oop", null);
+		Theme th8 = new Theme("ruby", "...", null);
+		Theme th9 = new Theme("python", "...", null);
+		Theme th10 = new Theme("vb", "...", null);
+		Theme th11 = new Theme("sql", "...", null);
 		themeRepo.save(th1);
 		themeRepo.save(th2);
+		themeRepo.save(th3);
+		themeRepo.save(th4);
+		themeRepo.save(th5);
+		themeRepo.save(th6);
+		themeRepo.save(th7);
+		themeRepo.save(th8);
+		themeRepo.save(th9);
+		themeRepo.save(th10);
+		themeRepo.save(th11);
 		
 		Chapter chap1 = new Chapter("java 7", "java version 7", th1, null);
 		Chapter chap2 = new Chapter("java 8", "java version 8", th1, null);

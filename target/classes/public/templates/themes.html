@@ -1,6 +1,17 @@
 <div>
 themes page
 </div>
-<div ng-repeat = "theme in thCtl.res._embedded.themeList">
-	{{theme.title}}
+<div>
+	<table class="table">
+		<tr class="thead-inverse">
+			<th>title</th>
+			<th>description</th>
+			<th></th>
+		</tr>
+		<tr ng-repeat="theme in thCtl.res._embedded.themeList">
+			<td>{{theme.title}}</td>
+			<td>{{theme.description}}</td>
+			<td><a href="{{theme._links.self.href}}">see</a></td>
+		</tr>
+	</table>
 </div>

@@ -1,19 +1,21 @@
 angular.module('rsa')
-.controller('homeController', ['UserService',  function(UserService) {
-	console.log('home controller');
+.controller('homeController', [function() {
+	var self = this;
 }])
-.controller('chapterController', ['ChaptersService', '$http', function(ChaptersService, http) {
+.controller('chapterController', ['ChaptersService', '$http', '$timeout', function(ChaptersService, http, timeout) {
 
 	var self = this;
 	self.res={};
-	ChaptersService.getChapters().then(function(resp){
-		self.res = resp.data
-		console.log('ok')
-	},function(){})
+	timeout(function(){
+		ChaptersService.getChapters().then(function(resp){
+			self.res = resp.data
+		},function(){})
+	}, 2000)
+	
+
 	}])
 	
 .controller('impController', ['ImpsService', function(ImpsService) {
-	console.log('impCtl');
 	var self = this;
 	self.res={};
 	ImpsService.getImps().then(function(resp){
@@ -51,7 +53,6 @@ angular.module('rsa')
 	}	
 	}])
 	.controller('AdminController', [function(){
-		console.log("administration")
 	}])
 	
 	

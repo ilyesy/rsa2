@@ -72,7 +72,6 @@ angular.module('rsa')
 					isAuthorized = true;
 				}
 			}
-//			console.log(isAuthorized)
 			return isAuthorized;
 		}
 		else return false;

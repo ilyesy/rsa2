@@ -1,9 +1,17 @@
 <div>
 imps page
 </div>
-<div ng-repeat=" imp in impCtl.res._embedded.implementationList">
-	<a href="{{imp._links.self.href}}">{{imp.snippet}}
-	(
-	{{imp.type}}
-	)</a>
+<div>
+	<table class="table">
+		<tr class="thead-inverse">
+			<th>snippet</th>
+			<th>type</th>
+			<th></th>
+		</tr>
+		<tr ng-repeat="imp in impCtl.res._embedded.implementationList">
+			<td>{{imp.snippet}}</td>
+			<td>{{imp.type}}</td>
+			<td><a href="{{imp._links.self.href}}">see</a></td>
+		</tr>
+	</table>
 </div>
