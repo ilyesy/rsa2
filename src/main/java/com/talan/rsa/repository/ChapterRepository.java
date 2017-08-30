@@ -1,6 +1,6 @@
 package com.talan.rsa.repository;
 
-import java.util.List;
+import java.util.stream.Stream;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -10,4 +10,11 @@ import com.talan.rsa.entity.Chapter;
 
 @Repository
 public interface ChapterRepository extends JpaRepository<Chapter, Long> {
+	
+//	@Query("select c from chapters c where c.id = 2")
+//	public List<Chapter> chaps(long id);
+	
+	@Query("select c from chapters c")
+	Stream<Chapter> findAlll();
+
 }
