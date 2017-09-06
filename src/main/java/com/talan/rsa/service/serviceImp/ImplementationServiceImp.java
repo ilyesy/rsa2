@@ -2,12 +2,11 @@ package com.talan.rsa.service.serviceImp;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import com.talan.rsa.entity.Implementation;
-import com.talan.rsa.entity.Rule;
 import com.talan.rsa.repository.ImplementationRepository;
 import com.talan.rsa.service.ImplementationService;
 
@@ -56,6 +55,11 @@ public class ImplementationServiceImp implements ImplementationService {
 	@Override
 	public List<Implementation> findImpsByRule(long rule) {
 		return implementationRepository.findImpsByRule(rule);
+	}
+
+	@Override
+	public Page<Implementation> findPage(Pageable p) {
+		return implementationRepository.findAll(p);
 	}
 
 }

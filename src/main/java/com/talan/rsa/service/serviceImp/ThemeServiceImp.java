@@ -3,8 +3,9 @@ package com.talan.rsa.service.serviceImp;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import com.talan.rsa.entity.Theme;
 import com.talan.rsa.repository.ThemeRepository;
 import com.talan.rsa.service.ThemeService;
@@ -33,5 +34,10 @@ public class ThemeServiceImp implements ThemeService{
 	public Theme getById(long id) {
 		Theme th = themeRepository.findOne(id);
 		return th;
+	}
+	
+	@Override
+	public Page<Theme> findPage(Pageable p) {
+		return themeRepository.findAll(p);
 	}
 }

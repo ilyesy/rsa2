@@ -3,6 +3,8 @@ package com.talan.rsa.service.serviceImp;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.talan.rsa.entity.Implementation;
@@ -48,6 +50,11 @@ public class RuleServiceImp implements RuleService{
 			implementationRepository.save(impToAddId);
 		});
 		return ruleToUpdate;
+	}
+	
+	@Override
+	public Page<Rule> findPage(Pageable p) {
+		return ruleRepository.findAll(p);
 	}
 
 }

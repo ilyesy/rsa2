@@ -1,8 +1,11 @@
 package com.talan.rsa.service;
 
 import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.talan.rsa.entity.Implementation;
-import com.talan.rsa.entity.Rule;
 
 public interface ImplementationService {
 
@@ -17,5 +20,7 @@ public interface ImplementationService {
 	 void delete(long id);
 	 
 	 List<Implementation> findImpsByRule(long rule);
+	 
+	 Page<Implementation> findPage(Pageable p);
 
 }

@@ -3,11 +3,13 @@ com\talan\rsa\config\AppSecurity.class
 com\talan\rsa\restController\ChapterController.class
 com\talan\rsa\service\ChapterService.class
 com\talan\rsa\restController\HomeController.class
+com\talan\rsa\entity\other\RsaPagedResources.class
 com\talan\rsa\service\serviceImp\ThemeServiceImp.class
 com\talan\rsa\entity\resourceSupport\RuleResource.class
 com\talan\rsa\service\serviceImp\RuleServiceImp.class
 com\talan\rsa\entity\resourceSupport\ImplementationResource.class
 com\talan\rsa\service\ThemeService.class
+com\talan\rsa\config\MethodSecurity.class
 com\talan\rsa\repository\ThemeRepository.class
 com\talan\rsa\entity\other\ErrorMessageBuilder.class
 com\talan\rsa\service\RuleService.class
@@ -21,6 +23,7 @@ com\talan\rsa\RsaApplication.class
 com\talan\rsa\entity\resourceSupport\ThemeResource.class
 com\talan\rsa\restController\ThemeController.class
 com\talan\rsa\entity\other\ValidationMessage.class
+com\talan\rsa\config\HttpSessionConfig.class
 com\talan\rsa\entity\other\RsaResponseBody.class
 com\talan\rsa\config\MvcConfig.class
 com\talan\rsa\repository\ImplementationRepository.class

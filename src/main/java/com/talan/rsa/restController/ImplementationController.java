@@ -1,14 +1,22 @@
 package com.talan.rsa.restController;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
+
+import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import com.talan.rsa.entity.other.RsaResponseBody;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.Link;
+import org.springframework.hateoas.PagedResources;
+import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
+
 import com.talan.rsa.entity.Implementation;
 import com.talan.rsa.entity.resourceSupport.ImplementationResource;
 import com.talan.rsa.exception.EntityNotFoundException;
@@ -102,6 +112,15 @@ public class ImplementationController {
 		return implementationService.findImpsByRule(id);
 	}
 	
-	
+	@RequestMapping(value="/slice", produces = MediaType.APPLICATION_JSON_VALUE)
+	public PagedResources<Implementation> slice(Pageable p, PagedResourcesAssembler assembler, UriComponentsBuilder uci){
+		Page<Implementation> page = implementationService.findPage(p);
+		URI uri = uci.path("/imps").build().toUri();
+		Page<Resource<Implementation>> resourcePage = page.map(imp -> {
+			String path = uri.toString()+ "/" + imp.getId();
+			return new Resource<Implementation>(imp, new Link(path));
+		});
+		return assembler.toResource(resourcePage);
+	}
 	
 }

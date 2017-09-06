@@ -3,7 +3,7 @@ angular.module('rsa')
 		
 		return {
 			getChapters: function(){
-				return $http.get('/chapters');
+				return $http.get('/chapters/slice');
 			}
 		}
 	}

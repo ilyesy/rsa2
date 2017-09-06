@@ -1,4 +1,4 @@
-package com.talan.rsa.restController;
+ package com.talan.rsa.restController;
 
 import java.net.URI;
 import java.util.Arrays;
@@ -6,9 +6,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.Link;
+import org.springframework.hateoas.PagedResources;
+import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 import com.talan.rsa.exception.EntityNotFoundException;
+import com.talan.rsa.repository.ThemeRepository;
 import com.talan.rsa.entity.Theme;
 import com.talan.rsa.entity.resourceSupport.ThemeResource;
 import com.talan.rsa.service.ThemeService;
@@ -27,11 +35,14 @@ public class ThemeController {
 
 	private ThemeService themeService;
 	
+	private ThemeRepository themrepo;
+	
 	public final String THEME="theme";
 	
 	@Autowired
-	public ThemeController(ThemeService themeService){
+	public ThemeController(ThemeService themeService, ThemeRepository themrepo){
 		this.themeService = themeService;
+		this.themrepo = themrepo;
 	}
 	
 	@RequestMapping(produces="application/json")
@@ -69,5 +80,14 @@ public class ThemeController {
 		}
 		themeToUpdate.copy(theme);
 		return themeService.save(themeToUpdate);
+	}
+	
+
+	@RequestMapping(value = "/slice", produces = MediaType.APPLICATION_JSON_VALUE)
+	public PagedResources<Theme> slice(Pageable p, PagedResourcesAssembler assembler, UriComponentsBuilder ucb){
+		Page<Theme> page = themeService.findPage(p);
+		String path = ucb.path("/themes").build().toUriString();
+		Page<Resource<Theme>> resourcesPage = page.map(theme -> new Resource<Theme>(theme, new Link(path + "/" + theme.getId()))) ;
+		return assembler.toResource(resourcesPage);
 	}
 }

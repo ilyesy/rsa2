@@ -31,6 +31,7 @@ public class PopulateData implements ApplicationRunner {
 
 	@Override
 	public void run(ApplicationArguments arg0) throws Exception {
+
 		
 		Theme th1 = new Theme("java", "typed lang / oop", null);
 		Theme th2 = new Theme("js", "interprated", null);

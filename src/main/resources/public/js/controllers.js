@@ -6,11 +6,9 @@ angular.module('rsa')
 
 	var self = this;
 	self.res={};
-	timeout(function(){
-		ChaptersService.getChapters().then(function(resp){
-			self.res = resp.data
-		},function(){})
-	}, 2000)
+	ChaptersService.getChapters().then(function(resp){
+		self.res = resp.data
+	},function(){})
 	
 
 	}])

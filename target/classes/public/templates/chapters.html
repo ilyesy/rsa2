@@ -8,7 +8,7 @@ chapters page
 			<th>description</th>
 			<th></th>
 		</tr>
-		<tr ng-repeat="chap in chCtl.res._embedded.chapterList">
+		<tr ng-repeat="chap in chCtl.res._embedded.resourceList">
 			<td>{{chap.title}}</td>
 			<td>{{chap.description}}</td>
 			<td><a href="{{chap._links.self.href}}">see</a></td>

@@ -3,6 +3,8 @@ package com.talan.rsa.service.serviceImp;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.talan.rsa.entity.Chapter;
@@ -40,6 +42,12 @@ public class ChapterServiceImp implements ChapterService {
 	@Override
 	public Chapter getById(long id) {
 		return chapterRepository.findOne(id);
+	}
+
+
+	@Override
+	public Page<Chapter> findPage(Pageable p) {
+		return chapterRepository.findAll(p);
 	}
 	
 	
