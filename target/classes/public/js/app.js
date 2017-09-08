@@ -1,4 +1,4 @@
-angular.module('rsa',['ngRoute', 'ngCookies', 'ngMaterial'])
+angular.module('rsa',['ngRoute', 'ngCookies', 'ngMaterial', 'datatables'])
 
 .factory('responseObserver',
 		  ['$q', '$rootScope','$injector', function responseObserver($q, $rootScope, injector) {
@@ -120,7 +120,6 @@ angular.module('rsa',['ngRoute', 'ngCookies', 'ngMaterial'])
 		if(next.$$route.data.authorized.length){
 			var path = next.originalPath
 			if(!UserService.hasAuthorization(path)){
-				//event.preventDefault()
 				location.path('/error')
 			}
 		}

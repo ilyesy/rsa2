@@ -25,9 +25,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 import com.talan.rsa.exception.EntityNotFoundException;
 import com.talan.rsa.repository.ThemeRepository;
+import com.talan.rsa.entity.Implementation;
 import com.talan.rsa.entity.Theme;
 import com.talan.rsa.entity.resourceSupport.ThemeResource;
 import com.talan.rsa.service.ThemeService;
+import com.talan.rsa.utilities.DataWrappingUtility;
 
 @RestController
 @RequestMapping("/themes")
@@ -39,10 +41,13 @@ public class ThemeController {
 	
 	public final String THEME="theme";
 	
+	private DataWrappingUtility<Theme> dataWrappingUtility;
+	
+	
 	@Autowired
-	public ThemeController(ThemeService themeService, ThemeRepository themrepo){
+	public ThemeController(ThemeService themeService, DataWrappingUtility dataWrappingUtility){
 		this.themeService = themeService;
-		this.themrepo = themrepo;
+		this.dataWrappingUtility = dataWrappingUtility;
 	}
 	
 	@RequestMapping(produces="application/json")
@@ -84,10 +89,9 @@ public class ThemeController {
 	
 
 	@RequestMapping(value = "/slice", produces = MediaType.APPLICATION_JSON_VALUE)
-	public PagedResources<Theme> slice(Pageable p, PagedResourcesAssembler assembler, UriComponentsBuilder ucb){
+	public PagedResources<Resource<Theme>> slice(Pageable p, PagedResourcesAssembler assembler, UriComponentsBuilder ucb){
 		Page<Theme> page = themeService.findPage(p);
-		String path = ucb.path("/themes").build().toUriString();
-		Page<Resource<Theme>> resourcesPage = page.map(theme -> new Resource<Theme>(theme, new Link(path + "/" + theme.getId()))) ;
-		return assembler.toResource(resourcesPage);
+		String urlBase = ucb.path("/themes/").build().toString();
+		return dataWrappingUtility.WrapPage(page, assembler, urlBase);
 	}
 }

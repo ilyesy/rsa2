@@ -2,6 +2,8 @@ package com.talan.rsa.restController;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+
+import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
@@ -26,6 +28,7 @@ import com.talan.rsa.entity.resourceSupport.ChapterResource;
 import com.talan.rsa.exception.EntityNotFoundException;
 import com.talan.rsa.repository.ChapterRepository;
 import com.talan.rsa.service.ChapterService;
+import com.talan.rsa.utilities.DataWrappingUtility;
 
 @RestController
 @RequestMapping("/chapters")
@@ -33,9 +36,12 @@ public class ChapterController {
 	
 	private ChapterService chapterService;
 	
+	private DataWrappingUtility<Chapter> dataWrappingUtility;
+	
 	@Autowired
-	public ChapterController(ChapterService chapterService, ChapterRepository chapterRepo) {
+	public ChapterController(ChapterService chapterService, DataWrappingUtility dataWrappingUtility) {
 		this.chapterService = chapterService;
+		this.dataWrappingUtility = dataWrappingUtility;
 	}
 	
 	@RequestMapping(produces="application/hal+json")
@@ -83,13 +89,9 @@ public class ChapterController {
 	}
 	
 	@RequestMapping(value="/slice", produces="application/json", method = RequestMethod.GET)
-	public PagedResources<Chapter> slice(Pageable p, PagedResourcesAssembler assembler, UriComponentsBuilder ucb){
-		Page<Chapter> chapters = chapterService.findPage(p);
-		URI uriComponent = ucb.path("/chapters/").build().toUri();
-		Page<Resource<Chapter>> resourcePage = chapters.map(chap -> {
-			String path = uriComponent.toString() + "/" + chap.getId();
-			return new Resource<Chapter>(chap, new Link(path));
-		}); 
-	    return assembler.toResource(resourcePage);
+	public PagedResources<Resource<Chapter>> slice(Pageable p, PagedResourcesAssembler assembler, UriComponentsBuilder ucb){
+		Page<Chapter> page = chapterService.findPage(p);
+		String urlBase = ucb.path("/chapters/").build().toString();
+		return dataWrappingUtility.WrapPage(page, assembler, urlBase);
 	}
 }

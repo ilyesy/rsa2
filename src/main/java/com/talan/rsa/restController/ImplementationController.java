@@ -30,6 +30,7 @@ import com.talan.rsa.entity.Implementation;
 import com.talan.rsa.entity.resourceSupport.ImplementationResource;
 import com.talan.rsa.exception.EntityNotFoundException;
 import com.talan.rsa.service.ImplementationService;import com.talan.rsa.service.RuleService;
+import com.talan.rsa.utilities.DataWrappingUtility;
 
 @RestController
 @RequestMapping("/imps")
@@ -39,10 +40,13 @@ public class ImplementationController {
 	
 	private RuleService ruleService;
 	
+	private DataWrappingUtility<Implementation> dataWrappingUtility;
+	
 	@Autowired
-	public ImplementationController(ImplementationService implementationService, RuleService ruleService) {
+	public ImplementationController(ImplementationService implementationService, RuleService ruleService, DataWrappingUtility dataWrappingUtility) {
 		this.implementationService = implementationService;
 		this.ruleService = ruleService;
+		this.dataWrappingUtility = dataWrappingUtility;
 	}	
 	
 	@RequestMapping(produces = "application/hal+json")
@@ -113,14 +117,10 @@ public class ImplementationController {
 	}
 	
 	@RequestMapping(value="/slice", produces = MediaType.APPLICATION_JSON_VALUE)
-	public PagedResources<Implementation> slice(Pageable p, PagedResourcesAssembler assembler, UriComponentsBuilder uci){
+	public PagedResources<Resource<Implementation>> slice(Pageable p, PagedResourcesAssembler assembler, UriComponentsBuilder ucb){
 		Page<Implementation> page = implementationService.findPage(p);
-		URI uri = uci.path("/imps").build().toUri();
-		Page<Resource<Implementation>> resourcePage = page.map(imp -> {
-			String path = uri.toString()+ "/" + imp.getId();
-			return new Resource<Implementation>(imp, new Link(path));
-		});
-		return assembler.toResource(resourcePage);
+		String urlBase = ucb.path("/imps/").build().toString();
+		return dataWrappingUtility.WrapPage(page, assembler, urlBase);
 	}
 	
 }

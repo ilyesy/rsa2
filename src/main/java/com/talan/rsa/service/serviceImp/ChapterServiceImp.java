@@ -21,7 +21,7 @@ public class ChapterServiceImp implements ChapterService {
 	private ChapterRepository chapterRepository;
 	
 	
-	@Autowired
+	
 	public ChapterServiceImp(ChapterRepository chapterRepository) {
 		this.chapterRepository = chapterRepository;
 	}
